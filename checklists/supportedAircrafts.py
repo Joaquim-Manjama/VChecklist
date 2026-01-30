@@ -5,3 +5,7 @@ airliners = [
                 "B767", "B777", "B787", "CRJ", "DHD",
                 "E140", "E190"
             ]
+
+general_aviation =  [
+                        "C172"
+                    ]

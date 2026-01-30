@@ -1,0 +1,12 @@
+- Preflight
+- Before Start
+- After Start
+- Before Taxi
+- Before Takeoff
+- After Takeoff
+- Climbing
+- Cruise
+- Descend
+- Approach
+- Landing
+- Shutdown
