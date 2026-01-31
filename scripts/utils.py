@@ -9,6 +9,7 @@ import os
 # Base file path of checklists .json files
 BASE_PATH = "checklists/"
 
+# Program title
 title = "        ********    Welcome to VCHECKLIST    ********"
 
 # Colors to be used in the terminal
@@ -24,17 +25,22 @@ class bcolors:
 def color(text, color):
 
     match color:
+
         case "GREEN":
             return f"{bcolors.OKGREEN}{text}{bcolors.ENDC}"
+        
         case "CYAN":
             return f"{bcolors.OKCYAN}{text}{bcolors.ENDC}"
+        
         case "RED":
             return f"{bcolors.WARNING}{text}{bcolors.ENDC}"
+        
         case _:
             return text
 
 # Clear the terminal
 def clear():
+
     print('\033[2J\033[H', end='', flush=True)
     print(title)
 
@@ -43,6 +49,7 @@ def clear():
 
 # Load the checklist .json file
 def load_checklist(file_path):
+
     with open(file_path, "r") as file:
         data = json.load(file)
         
@@ -53,6 +60,7 @@ def load_checklist(file_path):
 
 # Transform text into speech
 def say(item):
+
     time.sleep(1)
     engine = pyttsx3.init()
     engine.say(item)
@@ -64,6 +72,7 @@ def say(item):
 
 # Go through all checklist items for a specific flight phase
 def run_checkList(aircraft, phase):
+    
     clear()
     file_path = f"{BASE_PATH}{aircraft}.json"
     checklist = load_checklist(file_path)
@@ -82,9 +91,9 @@ def run_checkList(aircraft, phase):
     print(color(f"{final_phrase}", "CYAN"))
     say(final_phrase)
     
-
 # Get Available Checklists:
 def get_available_checklists():
+    
     checklists = []
 
     for file in os.listdir(BASE_PATH):
@@ -108,13 +117,14 @@ def get_checklist_phases(aircacft):
 def get_integer():
 
     integer_received = False
+    
     while not integer_received:
+        
         try:
             value = int(input(": "))
             integer_received = True
+        
         except:
             print("Invalid Entry!")
 
     return value
-
-

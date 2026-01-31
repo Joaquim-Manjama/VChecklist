@@ -4,6 +4,7 @@ completed_checks = []
 
 # Function to run the submenus
 def run_menu():
+    
     checklists = get_available_checklists()
 
     if not checklists:
@@ -18,6 +19,7 @@ def run_menu():
 
 # Initial Menu of the application
 def main_menu():
+    
     option = 0
     aircraft_type = get_available_checklists()[0]
 
@@ -32,19 +34,25 @@ def main_menu():
         option = get_integer()
 
         match option:
+            
             case 1: return aircraft_type
+            
             case 2: 
                 next_aircraft_type = select_aircraft()
+                
                 if next_aircraft_type:
                     aircraft_type = next_aircraft_type
+            
             case 3: 
                 print("Thanks for using VChecklist!")
                 return False
+            
             case _: 
                 print("Invalid Option!")
 
 # Menu to allow user to select and aircraft
 def select_aircraft():
+    
     option = 0
     supported_aircrafts = get_available_checklists()
     global completed_checks
@@ -56,8 +64,10 @@ def select_aircraft():
         #MENU
         clear()
         print("\n  ****  Choose Aircraft Type  ****")
+        
         for i in range(length):
             print(f"{i + 1}. {supported_aircrafts[i]}")
+        
         print(f"{length + 1}. Back")
         option = get_integer()
 
@@ -72,10 +82,9 @@ def select_aircraft():
         
 # Menu to let user chose the menu item
 def checklist_menu(aircraft_type):
-    option = 0
     
+    option = 0
     flight_phases = get_checklist_phases(aircraft_type)
-
     length = len(flight_phases)
     
     while option != 14:
@@ -88,11 +97,11 @@ def checklist_menu(aircraft_type):
 
             if flight_phases[i] in completed_checks:
                 print(color(f"{i + 1}. {flight_phases[i]} ✓", "GREEN"))
+            
             else:
                 print(f"{i + 1}. {flight_phases[i]}")
 
         print(f"{length + 1}. Back")
-
         option = get_integer()
 
         if option < 1 or option > length + 1:
