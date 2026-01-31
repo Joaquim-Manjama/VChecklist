@@ -1,0 +1,43 @@
+{
+    "Preflight": [
+        "Parking Brake", "Battery", "Standby Power", "Left Center Fuel Pump", "Left AFT Fuel Pump",
+        "APU", "APU Generator", "Position Lights", "Logo Light", "Cabin Lights", 
+        "Emergency Exit Lights", "Passenger Signs", "PACKS", "IRS Mode Selectors", "FMC", 
+        "Clearance", "Transponder", "Window Heat", "Flight Altitude", "Landing Altitude",
+        "Flight Directors", "LNav", "VNav", "Minimuns Ref", "Minimums", "Altimeter Ref",
+        "Altimeter", "Auto Break", "Com Radios", "Doors"
+    ],
+    
+    "Before Start": [
+        "Autothrottle", "Left and Right Fuel Pumps", "Aft and Fwd Fuel Pumps",
+        "Electric Hydrolic Pumps", "Anti Collision Lights", "Parking Brake",
+        "Ground Equipment", "Engine Area"
+    ],
+
+    "After Start": [
+        "Generators 1 and 2", "Probe Heat", "Wing Anti Ice", "Engine Anti Ice", "Packs",
+        "Isolation Valve", "APU Bleed", "APU", "Engine Start Switches", "Flaps",
+        "Elevator Trim", "Flight Controls", "Recall", "Lower Display Unit"
+    ],
+    
+    "Before Taxi": [
+        "Taxi Lights", "Runway Turn-off Lights"
+    ],
+
+    "Before Takeoff": [
+        "Parking Break", "Fuel Flow", "Central Fuel Pumps", "De-Ice", "Cabin Lights",
+        "Flight Instruments", "Engine Instruments", "Take-off Data", "Nav Equipment",
+        "Landing Lights", "Strobe Light", "Taxi Lights", "Transponder", "Clock"
+    ],
+
+    "After Takeoff": [
+        "Gear", "Auto-Break", "Engine Start Switches", "Runway Turn-Off Lights", "Cabin Lights"
+    ],
+
+    "Climb": [],
+    "Cruise": [],
+    "Descent": [],
+    "Approach": [],
+    "Landing": [],
+    "Shutdown": []
+}

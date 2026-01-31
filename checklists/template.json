@@ -1,0 +1,14 @@
+{
+    "Preflight": [],
+    "Before Start": [],
+    "After Start": [],
+    "Before Taxi": [],
+    "Before Takeoff": [],
+    "After Takeoff": [],
+    "Climb": [],
+    "Cruise": [],
+    "Descent": [],
+    "Approach": [],
+    "Landing": [],
+    "Shutdown": []
+}
