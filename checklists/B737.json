@@ -1,15 +1,14 @@
 {
     "Preflight": [
-        "Parking Brake", "Battery", "Standby Power", "Left Center Fuel Pump", "Left AFT Fuel Pump",
-        "APU", "APU Generator", "Position Lights", "Logo Light", "Cabin Lights", 
-        "Emergency Exit Lights", "Passenger Signs", "PACKS", "IRS Mode Selectors", "FMC", 
-        "Clearance", "Transponder", "Window Heat", "Flight Altitude", "Landing Altitude",
-        "Flight Directors", "LNav", "VNav", "Minimuns Ref", "Minimums", "Altimeter Ref",
-        "Altimeter", "Auto Break", "Com Radios", "Doors"
+        "Parking Brake", "Battery", "Standby Power", "Electrical Power", "Position Lights", 
+        "Logo Light", "Cabin Lights", "Emergency Exit Lights", "Passenger Signs", "PACKS", 
+        "IRS Mode Selectors", "FMC", "Clearance", "Transponder", "Window Heat", "Flight Altitude", 
+        "Landing Altitude", "Flight Directors", "LNav", "VNav", "Minimuns Ref", "Minimums", 
+        "Altimeter Ref", "Altimeter", "Auto Brake", "Com Radios", "Doors"
     ],
     
     "Before Start": [
-        "Autothrottle", "Left and Right Fuel Pumps", "Aft and Fwd Fuel Pumps",
+        "APU", "APU Generator", "Autothrottle", "Left and Right Fuel Pumps", "Aft and Fwd Fuel Pumps",
         "Electric Hydrolic Pumps", "Anti Collision Lights", "Parking Brake",
         "Ground Equipment", "Engine Area"
     ],
@@ -34,10 +33,38 @@
         "Gear", "Auto-Break", "Engine Start Switches", "Runway Turn-Off Lights", "Cabin Lights"
     ],
 
-    "Climb": [],
-    "Cruise": [],
-    "Descent": [],
-    "Approach": [],
-    "Landing": [],
-    "Shutdown": []
+    "Climb": [
+        "CMD A or B", "Altimiter", "ATC", "Landing Lights", "Fasten Seat Belts", "Central Fuel Pumps"
+    ],
+    
+    "Cruise": [
+        "Engine and Instruments", "Fuel Quantity", "Lights"
+    ],
+    
+    "Descent": [
+        "ATIS", "Radios", "Reset MCP Altitude", "FMC Approach Speed Ref", "Landing Altitude", 
+        "Recall", "Radio Altitude or Baro Minimums", "Auto Brake", "Passenger Signs"
+    ],
+    
+    "Approach": [
+        "Altimiter", "Speed", "Landing Lights", "Localizer Frequency",
+        "ILS Localizer Course", "APP", "Flaps", "Speed Brake", "Second Autopilot" 
+    ],
+
+    "Landing": [
+        "Go-Around Altitude", "Runway Turn-off Lights", "Landing Gear", "Autopilot", "Auto-Thrust"
+    ],
+    
+    "After Landing": [
+        "Transponder", "Flaps", "Speed Brake", "Landing Lights", "Strobe Lights", "Taxi Lights", 
+        "Cabin Lights", "Anti Ice", "APU", "Probe Heat", "Engine Start Switches", "Auto-Brake"
+    ],
+
+    "Shutdown": [
+        "Runway Turn-off Lights", "APU Generator", "Taxi Lights", "Parking Brakes",
+        "Engine Fuel Control Levers", "Ground Contact", "Ground Operations", 
+        "Passenger Signs", "APU Bleed Air", "Anti Collision Light", "Fuel Pumps", 
+        "Anti Ice", "Electrical Hydraulic Pumps", "Isolation Valve", "Fligh Director",
+        "Electrical Power", "Exterior Lights", "Doors"
+    ]
 }

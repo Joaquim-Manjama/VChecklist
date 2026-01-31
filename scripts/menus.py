@@ -1,15 +1,25 @@
-from scripts.utils import run_checkList, color, clear
+from scripts.utils import run_checkList, color, clear, get_available_checklists, get_checklist_phases, get_integer
 
+completed_checks = []
+
+# Function to run the submenus
 def run_menu():
+    checklists = get_available_checklists()
+
+    if not checklists:
+        print("Error: No Checklists Found! Add .json files to the checklist folder, see README.txt for more details")
+        return
+
     aircraft_type = main_menu()
 
     if aircraft_type:
         checklist_menu(aircraft_type)
         return
 
+# Initial Menu of the application
 def main_menu():
     option = 0
-    aircraft_type = "C172"
+    aircraft_type = get_available_checklists()[0]
 
     while option != 3:
         # MENU
@@ -19,7 +29,7 @@ def main_menu():
         print("1. Go to Checklist")
         print("2. Change Aircraft Type")
         print("3. Exit")
-        option = int(input(": "))
+        option = get_integer()
 
         match option:
             case 1: return aircraft_type
@@ -33,19 +43,23 @@ def main_menu():
             case _: 
                 print("Invalid Option!")
 
+# Menu to allow user to select and aircraft
 def select_aircraft():
     option = 0
-    supported_aircrafts = ["A320", "A330", "A340", "A350", "A380", "B737", "B757", "B767", "B777", "B787", "E140", "E190"]
+    supported_aircrafts = get_available_checklists()
+    global completed_checks
+    completed_checks = []
     length = len(supported_aircrafts)
 
     while option != length + 1:
+        
         #MENU
         clear()
         print("\n  ****  Choose Aircraft Type  ****")
         for i in range(length):
             print(f"{i + 1}. {supported_aircrafts[i]}")
         print(f"{length + 1}. Back")
-        option = int(input(": "))
+        option = get_integer()
 
         if option < 1 or option > length + 1:
             print("Invalid Option!")
@@ -56,14 +70,11 @@ def select_aircraft():
         
         return supported_aircrafts[option - 1]
         
+# Menu to let user chose the menu item
 def checklist_menu(aircraft_type):
     option = 0
     
-    flight_phases = [   "Preflight", "Before Start", "After Start", "Before Taxi", 
-                        "Before Takeoff", "After Takeoff", "Climb", "Cruise", 
-                        "Descent", "Approach", "Landing", "Shutdown"]
-    
-    completed_checks = []
+    flight_phases = get_checklist_phases(aircraft_type)
 
     length = len(flight_phases)
     
@@ -76,13 +87,13 @@ def checklist_menu(aircraft_type):
         for i in range(length):
 
             if flight_phases[i] in completed_checks:
-                print(color(f"{i + 1}. {flight_phases[i]}", "GREEN"))
+                print(color(f"{i + 1}. {flight_phases[i]} ✓", "GREEN"))
             else:
                 print(f"{i + 1}. {flight_phases[i]}")
 
         print(f"{length + 1}. Back")
 
-        option = int(input(": "))
+        option = get_integer()
 
         if option < 1 or option > length + 1:
             print("Invalid Option!")
