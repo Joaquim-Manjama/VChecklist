@@ -16,6 +16,8 @@ title = "        ********    Welcome to VCHECKLIST    ********"
 class bcolors:
     OKCYAN = '\033[96m'
     OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
     ENDC = '\033[0m'
 
 
@@ -32,8 +34,11 @@ def color(text, color):
         case "CYAN":
             return f"{bcolors.OKCYAN}{text}{bcolors.ENDC}"
         
-        case "RED":
+        case "YELLOW":
             return f"{bcolors.WARNING}{text}{bcolors.ENDC}"
+       
+        case "RED":
+            return f"{bcolors.FAIL}{text}{bcolors.ENDC}"
         
         case _:
             return text

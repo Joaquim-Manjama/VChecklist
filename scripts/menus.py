@@ -1,6 +1,7 @@
 from scripts.utils import run_checkList, color, clear, get_available_checklists, get_checklist_phases, get_integer
 
-completed_checks = []
+current_checklist = 0
+completed = []
 
 # Function to run the submenus
 def run_menu():
@@ -55,8 +56,9 @@ def select_aircraft():
     
     option = 0
     supported_aircrafts = get_available_checklists()
-    global completed_checks
-    completed_checks = []
+    global current_checklist, completed
+    current_checklist = 0
+    completed = []
     length = len(supported_aircrafts)
 
     while option != length + 1:
@@ -86,6 +88,7 @@ def checklist_menu(aircraft_type):
     option = 0
     flight_phases = get_checklist_phases(aircraft_type)
     length = len(flight_phases)
+    global current_checklist, completed
     
     while option != 14:
 
@@ -95,10 +98,13 @@ def checklist_menu(aircraft_type):
         
         for i in range(length):
 
-            if flight_phases[i] in completed_checks:
+            if i in completed:
                 print(color(f"{i + 1}. {flight_phases[i]} ✓", "GREEN"))
+
+            elif i < current_checklist - 1:
+                print(color(f"{i + 1}. {flight_phases[i]} ✗", "RED"))
             
-            else:
+            else:         
                 print(f"{i + 1}. {flight_phases[i]}")
 
         print(f"{length + 1}. Back")
@@ -114,5 +120,5 @@ def checklist_menu(aircraft_type):
         
         run_checkList(aircraft_type, flight_phases[option - 1])
         
-        if not flight_phases[option - 1] in completed_checks:
-            completed_checks.append(flight_phases[option - 1])
+        completed.append(option - 1)
+        current_checklist = option
