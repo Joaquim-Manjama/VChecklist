@@ -1,5 +1,4 @@
 from scripts.utils import run_checklist, color, clear, get_available_checklists, get_checklist_phases, get_integer, load_shortcut, save_shortcut, get_input
-import keyboard
 
 next_checklist = 1
 completed = []
