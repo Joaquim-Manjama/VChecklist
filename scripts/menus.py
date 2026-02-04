@@ -1,4 +1,5 @@
-from scripts.utils import run_checkList, color, clear, get_available_checklists, get_checklist_phases, get_integer
+from scripts.utils import run_checklist, color, clear, get_available_checklists, get_checklist_phases, get_integer, load_shortcut, save_shortcut
+import keyboard
 
 current_checklist = 0
 completed = []
@@ -24,15 +25,17 @@ def main_menu():
     option = 0
     aircraft_type = get_available_checklists()[0]
 
-    while option != 3:
+    while option != 4:
         # MENU
         clear()
         print("\n  ****  Main Menu  ****")
         print(f"\n                                           Aircraft Type: {aircraft_type}")
         print("1. Go to Checklist")
         print("2. Change Aircraft Type")
-        print("3. Exit")
+        print(f"3. Change Microphone Shortcut                (Current: '{load_shortcut()}')")
+        print("4. Exit")
         option = get_integer()
+
 
         match option:
             
@@ -44,7 +47,10 @@ def main_menu():
                 if next_aircraft_type:
                     aircraft_type = next_aircraft_type
             
-            case 3: 
+            case 3:
+                save_shortcut()
+            
+            case 4: 
                 print("Thanks for using VChecklist!")
                 return False
             
@@ -89,6 +95,8 @@ def checklist_menu(aircraft_type):
     flight_phases = get_checklist_phases(aircraft_type)
     length = len(flight_phases)
     global current_checklist, completed
+    shortcut = load_shortcut().lower()
+    print(shortcut)
     
     while option != 14:
 
@@ -118,7 +126,15 @@ def checklist_menu(aircraft_type):
             run_menu()
             return
         
-        run_checkList(aircraft_type, flight_phases[option - 1])
+        run_checklist(aircraft_type, flight_phases[option - 1])
         
         completed.append(option - 1)
         current_checklist = option
+
+# Next checklist
+def next_checklist(aircraft_type, phase):
+    global current_checklist
+    run_checklist(aircraft_type, phase)
+
+    if current_checklist < get_checklist_phases(aircraft_type):
+        current_checklist += 1

@@ -2,15 +2,15 @@ import json
 import pyttsx3
 import time
 import os
-
+import speech_recognition as sr
+import keyboard
 
 # CONSTANTS
-
 # Base file path of checklists .json files
 BASE_PATH = "checklists/"
 
 # Program title
-title = "        ********    Welcome to VCHECKLIST    ********"
+title = "        ********    Welcome to VCHECKlIST    ********"
 
 # Colors to be used in the terminal
 class bcolors:
@@ -22,7 +22,6 @@ class bcolors:
 
 
 # TERMINAL
-
 # Color the text
 def color(text, color):
 
@@ -51,7 +50,6 @@ def clear():
 
 
 # FILES
-
 # Load the checklist .json file
 def load_checklist(file_path):
 
@@ -60,9 +58,51 @@ def load_checklist(file_path):
         
     return dict(data)
 
+# Load microphone shortcut
+def load_shortcut():
+
+    with open("mic_shortcut.txt", "r") as file:
+        data = file.readline()
+
+    return data
+
+# Save microphone shortcut
+def save_shortcut():
+    while True:
+        clear()
+        print("  ****  Microphone Shortcut  ****")
+        print("Press your new shortcut ('Esc' to finish): ")
+        recorded = keyboard.record(until='esc')
+        key_presses = process_input(recorded)
+        op = input(f"Confirm '{key_presses}' as new shortcut? (y/n): ")
+
+        if op.lower() == "y" or op.lower() == "yes" :
+            file = open("mic_shortcut.txt", "w")
+            file.write(key_presses)
+            file.close()
+            break
+
+# Process user key presses
+def process_input(record=[]):
+    key_presses = ""
+    length = len(record)
+
+    if length == 0:
+        print("No key presses detected!")
+        return
+    
+    for i in range(length):
+        
+        key = str(record[i])
+        if not " up)" in key and not "esc" in key:
+            key_presses += str(record[i])
+            key_presses += "+"
+
+    key_presses = key_presses.rstrip("+").replace("KeyboardEvent", "").replace("(", "").replace(" down", "").replace(")", "")
+    
+    return key_presses.upper()
 
 # TTS
-
 # Transform text into speech
 def say(item):
 
@@ -73,10 +113,39 @@ def say(item):
     engine.stop()
 
 
-# CHECKLIST
+# STT
+# Listen to microphone
+def listen():
+    r = sr.Recognizer()
 
+    try:
+        with sr.Microphone() as source:
+            print("Listening...")
+            
+            r.adjust_for_ambient_noise(source, duration=0.2)
+            audio = r.listen(source)
+            text = r.recognize_google(audio)
+            text = text.lower()
+            
+            print(text)
+            return text
+
+    except sr.RequestError as e:
+        print("Could not request results; {0}".format(e))
+        return "error"
+
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+        return "error"
+
+    except KeyboardInterrupt:
+        print("Program terminated by user")
+        return "error"
+
+
+# CHECKlIST
 # Go through all checklist items for a specific flight phase
-def run_checkList(aircraft, phase):
+def run_checklist(aircraft, phase):
     
     clear()
     file_path = f"{BASE_PATH}{aircraft}.json"
@@ -117,6 +186,7 @@ def get_checklist_phases(aircacft):
     checklist = load_checklist(file_path)
 
     return list(checklist.keys())
+
 
 # INPUT
 def get_integer():
