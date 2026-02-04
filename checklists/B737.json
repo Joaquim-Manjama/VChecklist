@@ -30,7 +30,7 @@
     ],
 
     "After Takeoff": [
-        "Gear", "Auto-Break", "Engine Start Switches", "Runway Turn-Off Lights", "Cabin Lights"
+        "Landing Gear", "Auto-Break", "Engine Start Switches", "Runway Turn-Off Lights", "Cabin Lights"
     ],
 
     "Climb": [

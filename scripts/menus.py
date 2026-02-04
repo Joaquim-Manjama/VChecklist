@@ -1,7 +1,7 @@
-from scripts.utils import run_checklist, color, clear, get_available_checklists, get_checklist_phases, get_integer, load_shortcut, save_shortcut
+from scripts.utils import run_checklist, color, clear, get_available_checklists, get_checklist_phases, get_integer, load_shortcut, save_shortcut, get_input
 import keyboard
 
-current_checklist = 0
+next_checklist = 1
 completed = []
 
 # Function to run the submenus
@@ -62,8 +62,8 @@ def select_aircraft():
     
     option = 0
     supported_aircrafts = get_available_checklists()
-    global current_checklist, completed
-    current_checklist = 0
+    global next_checklist, completed
+    next_checklist = 1
     completed = []
     length = len(supported_aircrafts)
 
@@ -94,7 +94,7 @@ def checklist_menu(aircraft_type):
     option = 0
     flight_phases = get_checklist_phases(aircraft_type)
     length = len(flight_phases)
-    global current_checklist, completed
+    global next_checklist, completed
     shortcut = load_shortcut().lower()
     print(shortcut)
     
@@ -109,32 +109,44 @@ def checklist_menu(aircraft_type):
             if i in completed:
                 print(color(f"{i + 1}. {flight_phases[i]} ✓", "GREEN"))
 
-            elif i < current_checklist - 1:
+            elif i < next_checklist - 1:
                 print(color(f"{i + 1}. {flight_phases[i]} ✗", "RED"))
             
             else:         
                 print(f"{i + 1}. {flight_phases[i]}")
 
         print(f"{length + 1}. Back")
-        option = get_integer()
+        option = get_input()
 
-        if option < 1 or option > length + 1:
-            print("Invalid Option!")
-            continue
+        try:
 
-        if option == length + 1:
-            run_menu()
-            return
-        
-        run_checklist(aircraft_type, flight_phases[option - 1])
-        
-        completed.append(option - 1)
-        current_checklist = option
+            if option < 1 or option > length + 1:
+                print("Invalid Option!")
+                continue
 
-# Next checklist
-def next_checklist(aircraft_type, phase):
-    global current_checklist
-    run_checklist(aircraft_type, phase)
+            if option == length + 1:
+                run_menu()
+                return
+            
+            run_checklist(aircraft_type, flight_phases[option - 1])
+            completed.append(option - 1)
+            next_checklist = min(option + 1, len(flight_phases))
 
-    if current_checklist < get_checklist_phases(aircraft_type):
-        current_checklist += 1
+        except:
+
+            done = [False]
+            enumeration = enumerate(flight_phases)
+            
+            for key, phase in enumeration:
+                
+                if str(option).lower() in str(phase).lower():
+                    run_checklist(aircraft_type, flight_phases[key])
+                    completed.append(key)
+                    next_checklist = key + 2
+                    done[0] = True
+                    break
+
+            if not done[0]:
+                run_checklist(aircraft_type, flight_phases[next_checklist - 1])
+                completed.append(next_checklist - 1)
+                next_checklist = min(next_checklist + 1, len(flight_phases))

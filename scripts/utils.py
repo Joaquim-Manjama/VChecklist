@@ -203,3 +203,44 @@ def get_integer():
             print("Invalid Entry!")
 
     return value
+
+def get_input():
+    
+    shortcut = load_shortcut().lower()
+    input_result = [None]  # Use list so it's mutable in nested function
+    
+    # Handle voice input
+    def voice_handler():
+        result = listen()
+        
+        if result:
+            input_result[0] = result
+            keyboard.press_and_release('enter')
+            
+    keyboard.add_hotkey(shortcut, voice_handler)
+    
+    integer_received = False
+    
+    while not integer_received:
+        
+        # Check voice result first
+        if input_result[0] is not None:
+            break
+        
+        # Get manual input
+        try:
+            user_input = input(": ")
+            
+            # Check if input is not empty
+            if user_input.strip():  
+                input_result[0] = int(user_input)
+                integer_received = True
+        
+        except ValueError:
+            print("Invalid Entry!")
+        except KeyboardInterrupt:
+            keyboard.unhook_all()
+            raise
+    
+    keyboard.unhook_all()
+    return input_result[0]
