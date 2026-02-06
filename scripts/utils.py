@@ -1,13 +1,18 @@
 import json
-import pyttsx3
-import time
-import os
-import speech_recognition as sr
 import keyboard
+import os
+import pyttsx3
+import queue
+import speech_recognition as sr
+import threading
+import time
 
 # CONSTANTS
 # Base file path of checklists .json files
-BASE_PATH = "checklists/"
+CHECKLISTS_PATH = "checklists/"
+
+# Base file path of other files
+BASE_PATH = "files/"
 
 # Program title
 title = "        ********    Welcome to VCHECKlIST    ********"
@@ -24,27 +29,20 @@ class bcolors:
 # TERMINAL
 # Color the text
 def color(text, color):
-
     match color:
-
         case "GREEN":
             return f"{bcolors.OKGREEN}{text}{bcolors.ENDC}"
-        
         case "CYAN":
             return f"{bcolors.OKCYAN}{text}{bcolors.ENDC}"
-        
         case "YELLOW":
             return f"{bcolors.WARNING}{text}{bcolors.ENDC}"
-       
         case "RED":
             return f"{bcolors.FAIL}{text}{bcolors.ENDC}"
-        
         case _:
             return text
 
 # Clear the terminal
 def clear():
-
     print('\033[2J\033[H', end='', flush=True)
     print(title)
 
@@ -52,7 +50,6 @@ def clear():
 # FILES
 # Load the checklist .json file
 def load_checklist(file_path):
-
     with open(file_path, "r") as file:
         data = json.load(file)
         
@@ -60,8 +57,7 @@ def load_checklist(file_path):
 
 # Load microphone shortcut
 def load_shortcut():
-
-    with open("mic_shortcut.txt", "r") as file:
+    with open(f"{BASE_PATH}mic_shortcut.txt", "r") as file:
         data = file.readline()
 
     return data
@@ -77,7 +73,7 @@ def save_shortcut():
         op = input(f"Confirm '{key_presses}' as new shortcut? (y/n): ")
 
         if op.lower() == "y" or op.lower() == "yes" :
-            file = open("mic_shortcut.txt", "w")
+            file = open(F"{BASE_PATH}mic_shortcut.txt", "w")
             file.write(key_presses)
             file.close()
             break
@@ -92,20 +88,18 @@ def process_input(record=[]):
         return
     
     for i in range(length):
-        
         key = str(record[i])
+
         if not " up)" in key and not "esc" in key:
             key_presses += str(record[i])
             key_presses += "+"
 
     key_presses = key_presses.rstrip("+").replace("KeyboardEvent", "").replace("(", "").replace(" down", "").replace(")", "")
-    
     return key_presses.upper()
 
 # TTS
 # Transform text into speech
 def say(item):
-
     time.sleep(1)
     engine = pyttsx3.init()
     engine.say(item)
@@ -126,29 +120,23 @@ def listen():
             audio = r.listen(source)
             text = r.recognize_google(audio)
             text = text.lower()
-            
             print(text)
-            return text
-
+            return text 
     except sr.RequestError as e:
         print("Could not request results; {0}".format(e))
         return "error"
-
     except sr.UnknownValueError:
         print("Could not understand audio")
         return "error"
-
     except KeyboardInterrupt:
         print("Program terminated by user")
         return "error"
 
-
-# CHECKlIST
+# CHECKLIST
 # Go through all checklist items for a specific flight phase
 def run_checklist(aircraft, phase):
-    
     clear()
-    file_path = f"{BASE_PATH}{aircraft}.json"
+    file_path = f"{CHECKLISTS_PATH}{aircraft}.json"
     checklist = load_checklist(file_path)
     
     items = checklist[phase]
@@ -167,10 +155,9 @@ def run_checklist(aircraft, phase):
     
 # Get Available Checklists:
 def get_available_checklists():
-    
     checklists = []
 
-    for file in os.listdir(BASE_PATH):
+    for file in os.listdir(CHECKLISTS_PATH):
 
         if file != "template.json" and file.endswith(".json"):
             checklists.append(file.rstrip(".json"))
@@ -181,8 +168,7 @@ def get_available_checklists():
 
 # Get Checklists phases
 def get_checklist_phases(aircacft):
-    
-    file_path = f"{BASE_PATH}{aircacft}.json"
+    file_path = f"{CHECKLISTS_PATH}{aircacft}.json"
     checklist = load_checklist(file_path)
 
     return list(checklist.keys())
@@ -190,54 +176,55 @@ def get_checklist_phases(aircacft):
 
 # INPUT
 def get_integer():
-
     integer_received = False
     
-    while not integer_received:
-        
+    while not integer_received:   
         try:
             value = int(input(": "))
             integer_received = True
-        
         except:
             print("Invalid Entry!")
 
     return value
 
 def get_input():
-    
     shortcut = load_shortcut().lower()
-    input_result = [None]  # Use list so it's mutable in nested function
+    input_result = [None]
+    result_queue = queue.Queue()
     
     # Handle voice input
     def voice_handler():
         result = listen()
-        
         if result:
-            input_result[0] = result
-            keyboard.press_and_release('enter')
-            
+            result_queue.put(('voice', result))
+
+    # Thread to handle keyboard input
+    def keyboard_input_thread():
+        while True:
+            try:
+                user_input = input(": ")
+                if user_input.strip():
+                    result_queue.put(('keyboard', int(user_input)))
+                    break
+            except ValueError:
+                print("Invalid Entry!")
+            except:
+                break    
+        
     keyboard.add_hotkey(shortcut, voice_handler)
     
-    integer_received = False
+    # Start keyboard input thread
+    input_thread = threading.Thread(target=keyboard_input_thread, daemon=True)
+    input_thread.start()
     
-    while not integer_received:
-        
-        # Check voice result first
-        if input_result[0] is not None:
-            break
-        
-        # Get manual input
+    # Wait for either voice or keyboard input
+    while True:
         try:
-            user_input = input(": ")
-            
-            # Check if input is not empty
-            if user_input.strip():  
-                input_result[0] = int(user_input)
-                integer_received = True
-        
-        except ValueError:
-            print("Invalid Entry!")
+            source, value = result_queue.get(timeout=0.1)
+            input_result[0] = value
+            break
+        except queue.Empty:
+            continue
         except KeyboardInterrupt:
             keyboard.unhook_all()
             raise

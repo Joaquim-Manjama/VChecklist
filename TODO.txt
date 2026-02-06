@@ -1,3 +1,2 @@
-- Allow Full Checklist Activation Without Focusing on Terminal
-- Include Sounds to Hint Listening, done Listening, and error during Listening
 - Testing
+- Find and make improvements
