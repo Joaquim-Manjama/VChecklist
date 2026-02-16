@@ -1,4 +1,5 @@
 from scripts.utils import run_checklist, color, clear, get_available_checklists, get_checklist_phases, get_integer, load_shortcut, save_shortcut, get_input
+from scripts.logger import log
 
 next_checklist = 1
 completed = []
@@ -74,6 +75,7 @@ def select_aircraft():
         if option == length + 1:
             return False
         
+        log(f"Selected Aircraft Type: {supported_aircrafts[option - 1]}")
         return supported_aircrafts[option - 1]
         
 # Menu to let user chose the menu item

@@ -2,7 +2,7 @@
     "Preflight": [
         "Parking Brake", "Battery", "Standby Power", "Electrical Power", "Position Lights", 
         "Logo Light", "Cabin Lights", "Emergency Exit Lights", "Passenger Signs", "PACKS", 
-        "IRS Mode Selectors", "FMC", "Clearance", "Transponder", "Window Heat", "Flight Altitude", 
+        "IRS Mode Selectors", "FMC", "Clearance", "Transponder", "Yaw Damper", "Window Heat", "Flight Altitude", 
         "Landing Altitude", "Flight Directors", "LNav", "VNav", "Minimuns Ref", "Minimums", 
         "Altimeter Ref", "Altimeter", "Auto Brake", "Com Radios", "Doors"
     ],

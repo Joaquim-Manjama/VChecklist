@@ -7,6 +7,8 @@ import speech_recognition as sr
 import threading
 import time
 
+from logger import log
+
 # CONSTANTS
 # Base file path of checklists .json files
 CHECKLISTS_PATH = "checklists/"
@@ -76,6 +78,7 @@ def save_shortcut():
             file = open(F"{BASE_PATH}mic_shortcut.txt", "w")
             file.write(key_presses)
             file.close()
+            log(f"Microphone shortcut changed to '{key_presses}'")
             break
 
 # Process user key presses
@@ -120,7 +123,7 @@ def listen():
             audio = r.listen(source)
             text = r.recognize_google(audio)
             text = text.lower()
-            print(text)
+            log(f"Received Voice Input: {text}")
             return text 
     except sr.RequestError as e:
         print("Could not request results; {0}".format(e))
@@ -135,6 +138,7 @@ def listen():
 # CHECKLIST
 # Go through all checklist items for a specific flight phase
 def run_checklist(aircraft, phase):
+    log(f"Running {phase} checklist for {aircraft}...")
     clear()
     file_path = f"{CHECKLISTS_PATH}{aircraft}.json"
     checklist = load_checklist(file_path)
@@ -152,6 +156,7 @@ def run_checklist(aircraft, phase):
     final_phrase = f"{initial_phrase.lstrip("\n").rstrip("!")} Completed!" 
     print(color(f"{final_phrase}", "CYAN"))
     say(final_phrase)
+    log(f"Completed {phase} checklist for {aircraft}!")
     
 # Get Available Checklists:
 def get_available_checklists():
@@ -176,6 +181,7 @@ def get_checklist_phases(aircacft):
 
 # INPUT
 def get_integer():
+    log("Waiting for user input...")
     integer_received = False
     
     while not integer_received:   
@@ -185,9 +191,11 @@ def get_integer():
         except:
             print("Invalid Entry!")
 
+    log(f"Received Keyboard Input: {value}")
     return value
 
 def get_input():
+    log("Waiting for user input...")
     shortcut = load_shortcut().lower()
     input_result = [None]
     result_queue = queue.Queue()
@@ -205,6 +213,7 @@ def get_input():
                 user_input = input(": ")
                 if user_input.strip():
                     result_queue.put(('keyboard', int(user_input)))
+                    log(f"Received Keyboard Input: {user_input}")
                     break
             except ValueError:
                 print("Invalid Entry!")

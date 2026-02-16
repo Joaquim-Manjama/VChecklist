@@ -1,0 +1,57 @@
+{
+    "Preflight": [
+        "Parking Brake", "Battery", "Avionics Master", "Fuel Pumps", "Ice Protection",
+        "Start / Stop Selectors", "Cabin Signs", "APU", "Autopilot / FGC", "Display Control Panel",
+        "FMS", "Fuel Quantity", "Pitch Trim", "Altimeters"
+    ],
+
+    "Before Start": [
+        "Cabin Signs", "Rotating Beacon", "GPU", "Doors and Windows", "Nosewheel Steering"
+    ],
+
+    "After Start": [
+        "Hydrolic Pumps", "Generators"
+    ],
+
+    "Before Taxi": [
+        "Flight Controls", "Flaps", "Speed Brake", "Flight Director",
+        "Instruments", "Takeoff Data", "Crossfeed", "Takeoff"
+    ],
+
+    "Before Takeoff": [
+        "Flight Attendant", "Exterior Lights", "Takeoff Config"
+    ],
+
+    "After Takeoff": [
+        "Landing Gear", "Flaps", "Thrust Rating", "APU"
+    ],
+
+    "Climb": [
+        "Landing Lights", "Autopilot"
+    ],
+
+    "Cruise": [
+        "Thrust Rating", "Cabin Signs"
+    ],
+
+    "Descent": [
+        "Cabing  Signs", "Landing Lights", "Altimeters", "Landing Data", "Approach Briefing"
+    ],
+
+    "Approach": [
+        "Radio", "Inbound Approach Course", "Speed Brake"
+    ],
+
+    "Landing": [
+        "Flight Attendant", "Landing Gear", "Flaps", "Thrust Rating", "Autopilot"
+    ],
+
+    "After Landing": [
+        "Flaps", "Trims", "Taxi Lights", "Exterior Lights", "APU"
+    ],
+
+    "Shutdown": [
+        "Parking Brake", "Thrust Levers", "Hydrolic Pumps", "Nosewheel Steering", "Start / Stop Selectors",
+        "Rotating Beacon", "Cabin Signs", "Fuel Pumps", "GPU", "APU", "Avionics Master", "Battery"
+    ]
+}
